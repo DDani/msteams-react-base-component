@@ -9,7 +9,12 @@ import { teamsDarkTheme, teamsHighContrastTheme, teamsTheme, ThemePrepared } fro
 
 export const checkInTeams = (): boolean => {
     // eslint-disable-next-line dot-notation
-    const microsoftTeamsLib = microsoftTeams || window["microsoftTeams"];
+
+    if (!window) {
+        return false; // We are not running on browser env
+    }
+
+    const microsoftTeamsLib = microsoftTeams || window.microsoftTeams;
 
     if (!microsoftTeamsLib) {
         return false; // the Microsoft Teams library is for some reason not loaded
@@ -25,6 +30,8 @@ export const checkInTeams = (): boolean => {
 };
 
 export const getQueryVariable = (variable: string): string | undefined => {
+    if (!window) { return undefined; }
+
     const query = window.location.search.substring(1);
     const vars = query.split("&");
     for (const varPairs of vars) {
